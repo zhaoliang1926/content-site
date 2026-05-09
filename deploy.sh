@@ -21,7 +21,9 @@ for (const article of articles) {
   const content = fs.readFileSync(path.join(outputDir, article), 'utf8');
   const titleMatch = content.match(/^# (.+)$/m);
   const title = titleMatch ? titleMatch[1] : 'Untitled';
+  if (!title || title.match(/^[^a-zA-Z0-9一-鿿]+$/)) continue;
   const slug = title.replace(/[^a-zA-Z0-9一-鿿]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '').substring(0, 60);
+  if (!slug || slug.length < 1) continue;
   const postPath = path.join(postsDir, slug + '.json');
   if (fs.existsSync(postPath)) continue;
   const body = content.replace(/^# .+\n/m, '').replace(/^> .+\n/gm, '').trim();
