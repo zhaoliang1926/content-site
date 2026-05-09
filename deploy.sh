@@ -3,7 +3,7 @@
 set -e
 SITE_DIR="/Users/zhaoliang/Workspace/content-site"
 FACTORY_OUT="/Users/zhaoliang/Workspace/content-factory/output"
-PAGES_REPO="git@github.com:zhaoliang1926/zhaoliang1926.github.io.git"
+PAGES_REPO="https://github.com/zhaoliang1926/zhaoliang1926.github.io.git"
 
 cd "$SITE_DIR"
 
