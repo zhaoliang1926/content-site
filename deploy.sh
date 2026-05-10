@@ -3,7 +3,6 @@
 set -e
 SITE_DIR="/Users/zhaoliang/Workspace/content-site"
 FACTORY_OUT="/Users/zhaoliang/Workspace/content-factory/output"
-PAGES_REPO="https://github.com/zhaoliang1926/zhaoliang1926.github.io.git"
 
 cd "$SITE_DIR"
 
@@ -27,13 +26,7 @@ for (const article of articles) {
   const postPath = path.join(postsDir, slug + '.json');
   if (fs.existsSync(postPath)) continue;
   const body = content.replace(/^# .+\n/m, '').replace(/^> .+\n/gm, '').trim();
-  const post = {
-    title,
-    date: new Date().toISOString().split('T')[0],
-    content: body,
-    tags: ['AI工具', '自媒体', '内容创作', '效率提升'],
-    source: 'content-factory',
-  };
+  const post = { title, date: new Date().toISOString().split('T')[0], content: body, tags: ['AI工具', '自媒体', '内容创作', '效率提升'], source: 'content-factory' };
   fs.writeFileSync(postPath, JSON.stringify(post, null, 2));
   console.log('Synced: ' + slug);
   synced++;
@@ -47,14 +40,17 @@ npx next build 2>&1 | tail -3
 
 # Step 3: Deploy to GitHub Pages
 echo "[deploy] Deploying to GitHub Pages..."
+DEPLOY_DIR="$SITE_DIR/out"
 TMPDIR=$(mktemp -d)
-cp -r out/* "$TMPDIR/"
+git clone --depth 1 https://github.com/zhaoliang1926/zhaoliang1926.github.io.git "$TMPDIR" 2>&1
+rm -rf "$TMPDIR"/* "$TMPDIR"/.git
+cp -r "$DEPLOY_DIR"/* "$TMPDIR/"
 cd "$TMPDIR"
 touch .nojekyll
 git init
 git add -A
 git commit -m "Deploy $(date +%Y-%m-%d_%H:%M:%S)" --quiet
-git remote add origin "$PAGES_REPO"
+git remote add origin https://github.com/zhaoliang1926/zhaoliang1926.github.io.git
 git push -f origin main --quiet 2>&1
 rm -rf "$TMPDIR"
 echo "[deploy] Done! https://zhaoliang1926.github.io/"
