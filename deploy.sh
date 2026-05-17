@@ -42,7 +42,7 @@ npx next build 2>&1 | tail -3
 echo "[deploy] Deploying to GitHub Pages..."
 DEPLOY_DIR="$SITE_DIR/out"
 TMPDIR=$(mktemp -d)
-git clone --depth 1 https://github.com/zhaoliang1926/zhaoliang1926.github.io.git "$TMPDIR" 2>&1
+git clone --depth 1 git@github.com-pages:zhaoliang1926/zhaoliang1926.github.io.git "$TMPDIR" 2>&1
 rm -rf "$TMPDIR"/* "$TMPDIR"/.git
 cp -r "$DEPLOY_DIR"/* "$TMPDIR/"
 cd "$TMPDIR"
@@ -50,7 +50,7 @@ touch .nojekyll
 git init
 git add -A
 git commit -m "Deploy $(date +%Y-%m-%d_%H:%M:%S)" --quiet
-git remote add origin https://github.com/zhaoliang1926/zhaoliang1926.github.io.git
+git remote add origin git@github.com-pages:zhaoliang1926/zhaoliang1926.github.io.git
 git push -f origin main --quiet 2>&1
 rm -rf "$TMPDIR"
 echo "[deploy] Done! https://zhaoliang1926.github.io/"
